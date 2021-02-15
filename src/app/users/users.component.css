@@ -1,0 +1,9 @@
+.sort-arrow {
+  transform: rotate(90deg);
+  position: absolute;
+  padding: 1px 3px;
+}
+
+.sort-arrow.reverse  {
+  transform: rotate(-90deg);
+}

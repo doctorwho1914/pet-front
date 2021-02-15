@@ -1,0 +1,75 @@
+<div style="float: left">
+  <table border="1">
+    <caption>users</caption>
+    <label for="name_filter">Name filer</label><input id="name_filter" type="text" [(ngModel)]="loadOptions.filter_name">
+    <label for="email_filter">Email filter</label><input id="email_filter" type="text" [(ngModel)]="loadOptions.filter_email">
+    <button (click)="load()">Reload data</button>
+    <button (click)="loadOptions = {}; load()">Clear all</button>
+    <tr>
+      <th style="cursor: pointer" (click)="load('sort_name',loadOptions.sort_name === 'desc' ? 'asc' : 'desc')">
+        Name <span class="sort-arrow"
+                   *ngIf="loadOptions.sort_name"
+                   [ngClass]="{reverse: loadOptions.sort_name === 'asc'}">></span
+      ></th>
+      <th style="cursor: pointer" (click)="load('sort_email',loadOptions.sort_email === 'desc' ? 'asc' : 'desc')">
+        Email <span class="sort-arrow"
+                    *ngIf="loadOptions.sort_email"
+                    [ngClass]="{reverse: loadOptions.sort_email === 'asc'}">></span>
+      </th>
+    </tr>
+    <tr *ngFor="let user of users">
+      <td>{{user.name}}</td>
+      <td>{{user.email}}</td>
+      <td (click)="updateUserForm.setValue({email: user.email,name: user.name,id: user.id, password: ''})" style="cursor: pointer">Update</td>
+      <td (click)="removeUser(user.id)" style="cursor: pointer">Remove</td>
+    </tr>
+  </table>
+</div>
+
+<div style="float: left; padding: 25px;">
+  <h3>Create</h3>
+  <form [formGroup]="createUserForm" (ngSubmit)="createUser()">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" formControlName="name" id="name" autocomplete="off">
+      <div class="error" *ngIf="createUserForm.controls['name'].hasError('required') && createUserForm.controls['name'].touched">Name is required</div>
+    </div>
+    <div class="form-group">
+      <label for="name">Email:</label>
+      <input type="text" class="form-control" formControlName="email" id="email" autocomplete="off">
+      <div class="error" *ngIf="createUserForm.controls['email'].hasError('email') && createUserForm.controls['email'].touched">Email must be email</div>
+      <div class="error" *ngIf="createUserForm.controls['email'].hasError('required') && createUserForm.controls['email'].touched">Email is required</div>
+    </div>
+    <div class="form-group">
+      <label for="name">Password:</label>
+      <input type="text" class="form-control" formControlName="password" id="password" autocomplete="off">
+      <div class="error" *ngIf="createUserForm.controls['password'].hasError('minlength') && createUserForm.controls['password'].touched">Password must have more 5 chars</div>
+      <div class="error" *ngIf="createUserForm.controls['password'].hasError('required') && createUserForm.controls['password'].touched">Password is required</div>
+    </div>
+    <button class="btn btn-success" [disabled]="createUserForm.invalid">Create</button>
+  </form>
+</div>
+
+<div style="float: left; padding: 25px;">
+  <h3>Update user</h3>
+  <form [formGroup]="updateUserForm" (ngSubmit)="updateUser()">
+    <div class="form-group">
+      <label for="edit-name">Name:</label>
+      <input type="text" class="form-control" formControlName="name" id="edit-name" autocomplete="off">
+      <div class="error" *ngIf="updateUserForm.controls['name'].hasError('required') && updateUserForm.controls['name'].touched">Name is required</div>
+    </div>
+    <div class="form-group">
+      <label for="edit-name">Email:</label>
+      <input type="text" class="form-control" formControlName="email" id="edit-email" autocomplete="off">
+      <div class="error" *ngIf="updateUserForm.controls['email'].hasError('email') && updateUserForm.controls['email'].touched">Email must be email</div>
+      <div class="error" *ngIf="updateUserForm.controls['email'].hasError('required') && updateUserForm.controls['email'].touched">Email is required</div>
+    </div>
+    <div class="form-group">
+      <label for="edit-name">Password:</label>
+      <input type="text" class="form-control" formControlName="password" id="edit-password" autocomplete="off">
+      <div class="error" *ngIf="updateUserForm.controls['password'].hasError('minlength') && updateUserForm.controls['password'].touched">Password must have more 5 chars</div>
+      <div class="error" *ngIf="updateUserForm.controls['password'].hasError('required') && updateUserForm.controls['password'].touched">Password is required</div>
+    </div>
+    <button class="btn btn-success" [disabled]="updateUserForm.invalid">Update</button>
+  </form>
+</div>
